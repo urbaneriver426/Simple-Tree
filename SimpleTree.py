@@ -1,14 +1,14 @@
 class SimpleTreeNode:
 	
 	def __init__(self, val, parent):
-		self.NodeValue = val # значение в узле
-		self.Parent = parent # родитель или None для корня
-		self.Children = [] # список дочерних узлов
+		self.NodeValue = val 
+		self.Parent = parent 
+		self.Children = [] 
 	
 class SimpleTree:
 
 	def __init__(self, root):
-		self.Root = root; # корень, может быть None
+		self.Root = root
 	
 	def AddChild(self, ParentNode, NewChild):
 		ParentNode.Children.append(NewChild)
@@ -19,20 +19,19 @@ class SimpleTree:
 		NodeToDelete.Parent = None 
 
 	def GetAllNodes(self):
-		result = [] # то, что функция возвращает
-		curNode = self.Root # проверяемый узел
-		cont = True # условие для продолжение цикла 
-		level = 0
-		depth = {} # глубина и позиция провенного узла
-		direction = True # направление
-
+		result = []
+		curNode = self.Root 
+		cont = True 
+		level = 1
+		depth = {1:0} 
+		direction = True 
 		if curNode is None:
 			return result
 		elif len(curNode.Children) == 0:
 			result.append(curNode)
 			return result
 		else:
-			result.append(curNode)		
+			result.append(curNode)	
 		while cont:
 			if direction == True:
 				if len(curNode.Children) != 0:
@@ -42,45 +41,42 @@ class SimpleTree:
 						result.append(curNode)
 						depth[level] = 0
 					else:
-						if len(curNode.Children) == depth[level] + 1:
-							direction = False
-						else:
-							depth[level] += 1
-							curNode = curNode.Children[depth[leve]]
-							result.append(curNode)						
+						depth[level] += 1
+						curNode = curNode.Children[depth[leve]]
+						result.append(curNode)						
 				else:
 					curNode = curNode.Parent
 					direction = False
 			else:
-				if len(curNode.Children) > depth[level] + 1:
+				if len(curNode.Children) > depth[level]+1:
 					depth[level] += 1
 					curNode = curNode.Children[depth[level]]
 					result.append(curNode)
 					direction = True
 				else:
-					curNode = curNode.Parent
-					if curNode is None:
-						cont = False
-		return result
+					if curNode is self.Root:
+						return result
+					else:
+						curNode = curNode.Parent
+						del depth[level]
+						level -= 1
 
 	def FindNodesByValue(self, val):
-		result = [] # то, что функция возвращает
-		curNode = self.Root # проверяемый узел
-		cont = True # условие для продолжение цикла 
-		level = 0
-		depth = {} # глубина и позиция провенного узла
-		direction = True # направление
-
+		result = []
+		curNode = self.Root 
+		cont = True 
+		level = 1
+		depth = {1:0} 
+		direction = True 
 		if curNode is None:
 			return result
 		elif len(curNode.Children) == 0:
 			if curNode.NodeValue == val:
 				result.append(curNode)
-				return result
+			return result
 		else:
 			if curNode.NodeValue == val:
-				result.append(curNode)
-				return result		
+				result.append(curNode)	
 		while cont:
 			if direction == True:
 				if len(curNode.Children) != 0:
@@ -91,29 +87,28 @@ class SimpleTree:
 						if curNode.NodeValue == val:
 							result.append(curNode)
 					else:
-						if len(curNode.Children) == depth[level] + 1:
-							direction = False
-						else:
-							depth[level] += 1
-							curNode = curNode.Children[depth[leve]]
-							if curNode.NodeValue == val:
-								result.append(curNode)						
+						depth[level] += 1
+						curNode = curNode.Children[depth[leve]]
+						if curNode.NodeValue == val:
+							result.append(curNode)						
 				else:
 					curNode = curNode.Parent
 					direction = False
 			else:
-				if len(curNode.Children) > depth[level] + 1:
+				if len(curNode.Children) > depth[level]+1:
 					depth[level] += 1
 					curNode = curNode.Children[depth[level]]
 					direction = True
 					if curNode.NodeValue == val:
 						result.append(curNode)
 				else:
-					curNode = curNode.Parent
-					if curNode is None:
-						cont = False
-		return result
-   
+					if curNode is self.Root:
+						return result
+					else:
+						curNode = curNode.Parent
+						del depth[level]
+						level -= 1
+
 	def MoveNode(self, OriginalNode, NewParent):
 		OriginalNode.Parent.Children.remove(OriginalNode)
 		NewParent.Children.append(OriginalNode)
@@ -124,17 +119,16 @@ class SimpleTree:
 
 	def LeafCount(self):
 		result = 0
-		curNode = self.Root # проверяемый узел
-		cont = True # условие для продолжение цикла 
-		level = 0
-		depth = {} # глубина и позиция провенного узла
-		direction = True # направление
-
+		curNode = self.Root 
+		cont = True 
+		level = 1
+		depth = {1:0} 
+		direction = True 
 		if curNode is None:
 			return result
 		elif len(curNode.Children) == 0:
 			result += 1
-			return result		
+			return result
 		while cont:
 			if direction == True:
 				if len(curNode.Children) != 0:
@@ -143,23 +137,21 @@ class SimpleTree:
 						curNode = curNode.Children[0]
 						depth[level] = 0
 					else:
-						if len(curNode.Children) == depth[level] + 1:
-							direction = False
-						else:
-							depth[level] += 1
-							curNode = curNode.Children[depth[leve]]
-							result.append(curNode)						
+						depth[level] += 1
+						curNode = curNode.Children[depth[leve]]						
 				else:
-					curNode = curNode.Parent
 					result += 1
+					curNode = curNode.Parent
 					direction = False
 			else:
-				if len(curNode.Children) > depth[level] + 1:
+				if len(curNode.Children) > depth[level]+1:
 					depth[level] += 1
 					curNode = curNode.Children[depth[level]]
 					direction = True
 				else:
-					curNode = curNode.Parent
-					if curNode is None:
-						cont = False
-		return result
+					if curNode is self.Root:
+						return result
+					else:
+						curNode = curNode.Parent
+						del depth[level]
+						level -= 1
