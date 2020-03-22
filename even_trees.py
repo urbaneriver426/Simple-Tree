@@ -18,48 +18,19 @@ class SimpleTree:
 		NodeToDelete.Parent.Children.remove(NodeToDelete)
 		NodeToDelete.Parent = None 
 
-	def GetAllNodes(self):
-		result = []
-		curNode = self.Root 
-		cont = True 
-		level = 1
-		depth = {1:0} 
-		direction = True 
-		if curNode is None:
-			return result
-		elif len(curNode.Children) == 0:
-			result.append(curNode)
-			return result
-		else:
-			result.append(curNode)	
-		while cont:
-			if direction == True:
-				if len(curNode.Children) != 0:
-					level += 1
-					if (level in depth) is False:
-						curNode = curNode.Children[0]
-						result.append(curNode)
-						depth[level] = 0
-					else:
-						depth[level] += 1
-						curNode = curNode.Children[depth[leve]]
-						result.append(curNode)						
-				else:
-					curNode = curNode.Parent
-					direction = False
+	def GetAllNodes(self,result = [], count = 0):
+		if count == 0:
+			if self.Root is not None:
+				result.append(self.Root)
 			else:
-				if len(curNode.Children) > depth[level]+1:
-					depth[level] += 1
-					curNode = curNode.Children[depth[level]]
-					result.append(curNode)
-					direction = True
-				else:
-					if curNode is self.Root:
-						return result
-					else:
-						curNode = curNode.Parent
-						del depth[level]
-						level -= 1	
+				return result
+		for i in range(len(result[count].Children)):
+			result.append(result[count].Children[i])
+		count += 1
+		if count < len(result):
+			return self.GetAllNodes(result, count)
+		else:	
+			return result	
 
 	def FindNodesByValue(self, val):
 		x = self.GetAllNodes()
@@ -84,7 +55,6 @@ class SimpleTree:
 			if len(node.Children) == 0:
 				result += 1
 		return result
-
 
 	def EvenTrees(self):
 		allNodes = self.GetAllNodes()
