@@ -67,11 +67,11 @@ class SimpleTree:
 		return result
 
 	def EvenTrees(self):
+		result = []
 		if self.Count()%2==0:
 			allNodes = self.GetAllNodes()
 			count = len(allNodes)-1
 			pool = []
-			result = []
 			while len(allNodes)>2:
 				if len(pool) == 0:
 					pool.append(allNodes.pop())
@@ -90,4 +90,6 @@ class SimpleTree:
 						else:
 							pool = []
 							count = len(allNodes)-1
-		return result
+			return result
+		 else:
+		 	return result
