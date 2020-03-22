@@ -91,5 +91,5 @@ class SimpleTree:
 							pool = []
 							count = len(allNodes)-1
 			return result
-		 else:
-		 	return result
+		else:
+			return result
