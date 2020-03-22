@@ -18,7 +18,17 @@ class SimpleTree:
 		NodeToDelete.Parent.Children.remove(NodeToDelete)
 		NodeToDelete.Parent = None 
 
-	def GetAllNodes(self,result = [], count = 0):
+	def FindNodesByValue(self, val):
+		x = self.GetAllNodes()
+		result = []
+		for node in x:
+			if node.NodeValue == val:
+				result.append(node)
+		return result
+
+	def GetAllNodes(self, result=None, count=0):
+		if result is None:
+			result = []
 		if count == 0:
 			if self.Root is not None:
 				result.append(self.Root)
@@ -57,26 +67,27 @@ class SimpleTree:
 		return result
 
 	def EvenTrees(self):
-		allNodes = self.GetAllNodes()
-		count = len(allNodes)-1
-		pool = []
-		result = []
-		while len(allNodes)>2:
-			if len(pool) == 0:
-				pool.append(allNodes.pop())
-				count -= 1
-			else:
-				if allNodes[count].Parent is pool[0].Parent:
+		if self.Count()%2==0:
+			allNodes = self.GetAllNodes()
+			count = len(allNodes)-1
+			pool = []
+			result = []
+			while len(allNodes)>2:
+				if len(pool) == 0:
 					pool.append(allNodes.pop())
 					count -= 1
 				else:
-					if len(pool)%2 != 0:
-						result.insert(0, pool[0].Parent.Parent)
-						result.insert(1, pool[0].Parent)
-						allNodes.remove(pool[0].Parent)
-						pool = []
-						count = len(allNodes)-1
+					if allNodes[count].Parent is pool[0].Parent:
+						pool.append(allNodes.pop())
+						count -= 1
 					else:
-						pool = []
-						count = len(allNodes)-1
+						if len(pool)%2 != 0:
+							result.insert(0, pool[0].Parent.Parent)
+							result.insert(1, pool[0].Parent)
+							allNodes.remove(pool[0].Parent)
+							pool = []
+							count = len(allNodes)-1
+						else:
+							pool = []
+							count = len(allNodes)-1
 		return result
